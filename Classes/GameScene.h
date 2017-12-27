@@ -2,7 +2,7 @@
 #include "cocos2d.h"
 #include "BackgroundLayer.h"
 #include "FishLayer.h"
-#include "MenuLayer.h"
+//#include "MenuLayer.h"
 USING_NS_CC;
 
 class GameScene :
@@ -13,9 +13,10 @@ public:
 	CREATE_FUNC(GameScene)
 	virtual bool init();
 	virtual ~GameScene();
+	void preloadResources();
 protected:
 	BackgroundLayer* backgroundLayer;
 	FishLayer* fishLayer;
-	MenuLayer* menuLayer;
+//	MenuLayer* menuLayer;
 };
 
