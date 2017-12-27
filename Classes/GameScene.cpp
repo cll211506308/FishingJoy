@@ -19,6 +19,9 @@ bool GameScene::init()
 		fishLayer = FishLayer::create();
 		CC_BREAK_IF(!fishLayer);
 		this->addChild(fishLayer);
+		cannonLayer = CannonLayer::create();
+		CC_BREAK_IF(!cannonLayer);
+		this->addChild(cannonLayer);
 		/*menuLayer = MenuLayer::create();
 		CC_BREAK_IF(!menuLayer);
 		CC_SAFE_RETAIN(menuLayer);*/
@@ -41,6 +44,11 @@ void GameScene::preloadResources(){
 	spriteFrameCache->addSpriteFramesWithFile("FishActor-Mid-ipadhd.plist");
 	spriteFrameCache->addSpriteFramesWithFile("cannon-ipadhd.plist");
 	spriteFrameCache->addSpriteFramesWithFile("Item-chaojiwuqi-ipadhd.plist");
+
+	CCSpriteFrameCache *frameCache = CCSpriteFrameCache::sharedSpriteFrameCache();
+	frameCache->addSpriteFramesWithFile(STATIC_DATA_STRING("cannon_plist"));
+	frameCache->addSpriteFramesWithFile(STATIC_DATA_STRING("bullet_plist"));
+
 
 	char str[][50] = {"SmallFish","Croaker","AngelFish","Amphiprion","PufferS",	
 		"Bream","Porgy","Chelonian","Lantern","Ray","Shark","GoldenTrout",	

@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include "BackgroundLayer.h"
 #include "FishLayer.h"
+#include "CannonLayer.h"
 //#include "MenuLayer.h"
 USING_NS_CC;
 
@@ -17,6 +18,7 @@ public:
 protected:
 	BackgroundLayer* backgroundLayer;
 	FishLayer* fishLayer;
+	CannonLayer* cannonLayer;
 //	MenuLayer* menuLayer;
 };
 
