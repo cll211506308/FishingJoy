@@ -31,6 +31,7 @@ public:
 	float getFireRange();
 	static Cannon* create(CannonType var = k_Cannon_Type_1);
 	CCSize getSize();
+	void aimAt(CCPoint target);
 protected:
 	CCArray* cannonSprites;
 	CannonType type;

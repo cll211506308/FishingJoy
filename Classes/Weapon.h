@@ -13,6 +13,8 @@ public:
 	bool init(CannonType var = k_Cannon_Type_1);
 	void changeCannon(CannonOperate operate);
 	CCSize getCannonSize();
+	void aimAt(CCPoint target);
+	void shootTo (CCPoint target);
 protected:
 	Cannon* cannon;
 	CCArray* bullets;
