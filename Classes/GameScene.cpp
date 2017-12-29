@@ -29,6 +29,7 @@ bool GameScene::init()
 		/*menuLayer = MenuLayer::create();
 		CC_BREAK_IF(!menuLayer);
 		CC_SAFE_RETAIN(menuLayer);*/
+		scheduleUpdate();
 		return true;
 	} while (0);
 	return false;
@@ -39,7 +40,8 @@ GameScene::~GameScene()
 //	CC_SAFE_RELEASE_NULL(menuLayer);
 }
 
-void GameScene::preloadResources(){
+void GameScene::preloadResources()
+{
 	CCSpriteFrameCache* spriteFrameCache = CCSpriteFrameCache::sharedSpriteFrameCache();
 	spriteFrameCache->addSpriteFramesWithFile("FishActor-Large-ipadhd.plist");
 	spriteFrameCache->addSpriteFramesWithFile("FishActor-Marlin-ipadhd.plist");
@@ -58,9 +60,11 @@ void GameScene::preloadResources(){
 		"Bream","Porgy","Chelonian","Lantern","Ray","Shark","GoldenTrout",	
 		"GShark","GMarlinsFish","GrouperFish","JadePerch","MarlinsFish","PufferB"};
 
-	for(int i = 0;i < 18;i++){
+	for(int i = 0;i < 18;i++)
+	{
 		CCArray* array = CCArray::createWithCapacity(10);
-		for(int j = 0;j < 10;j++){
+		for(int j = 0;j < 10;j++)
+		{
 			CCString* string = CCString::createWithFormat("%s_actor_%03d.png",str[i],j+1);
 			CCSpriteFrame* spriteFrame = spriteFrameCache->spriteFrameByName(string->getCString());
 			CC_BREAK_IF(!spriteFrame);
@@ -76,10 +80,74 @@ void GameScene::preloadResources(){
 	}
 }
 
-void GameScene::cannonAimAt(CCPoint target){
+void GameScene::cannonAimAt(CCPoint target)
+{
 	cannonLayer->aimAt(target);
 }
 
-void GameScene::cannonShootTo(CCPoint target){
+void GameScene::cannonShootTo(CCPoint target)
+{
 	cannonLayer->shootTo(target);
+}
+
+bool GameScene::checkOutCollisionBetweenFishesAndBullet(Bullet* bullet)
+{
+	Weapon* weapon = cannonLayer->getWeapon();
+	CCPoint bulletPosition = bullet->getCollisionPoint();
+	CCArray* fishArray = fishLayer->getFishArray();
+	CCObject* object = NULL;
+	CCARRAY_FOREACH(fishArray,object)
+	{
+		Fish* fish =(Fish*)object;
+		if(fish->isRunning() && fish->getCollisionArea().containsPoint(bulletPosition))
+		{
+			bullet->end();
+			return true;
+		}
+	}
+	return false;
+}
+
+void GameScene::checkOutCollision()
+{
+	CCArray* bullets = cannonLayer->getWeapon()->getBullets();
+	CCObject* object = NULL;
+	CCARRAY_FOREACH(bullets, object){
+		Bullet* bullet = (Bullet*)object;
+		if(bullet->isVisible())
+		{
+			if(checkOutCollisionBetweenFishesAndBullet(bullet))
+			{
+				checkOutCollisionBetweenFishesAndFishingNet(bullet);
+			}
+		}
+	}
+}
+
+void GameScene::update(float delta)
+{
+	this->checkOutCollision();
+}
+
+void GameScene::fishWillBeCaught(Fish* fish){
+	int weaponType = cannonLayer->getWeapon()->getCannonType();
+	int fishType = fish->getType();
+	float fishPer[k_Fish_Type_Count] = { 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4 };
+	float weaponPer[k_Cannon_Count] = { 0.3, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1 };
+	if(CCRANDOM_0_1() < 1.1 ){
+		fish->beCaught();
+	}
+}
+
+void GameScene::checkOutCollisionBetweenFishesAndFishingNet(Bullet *bullet){
+	Weapon* weapon = cannonLayer->getWeapon();
+	CCRect rect = weapon->getCollisionArea(bullet);
+	CCArray* fishesArray = fishLayer->getFishArray();
+	CCObject* object = NULL;
+	CCARRAY_FOREACH(fishesArray,object){
+		Fish* fish = (Fish*)object;
+		if(fish->isRunning() && rect.intersectsRect(fish->getCollisionArea())){
+			this->fishWillBeCaught(fish);
+		}
+	}
 }

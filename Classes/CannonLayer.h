@@ -15,6 +15,6 @@ public:
 	void aimAt(CCPoint target);
 	void shootTo (CCPoint target);
 protected:
-	Weapon* weapon;
+	CC_SYNTHESIZE_READONLY(Weapon*, weapon, Weapon);
 	CCMenuItemImage *addItem,*subItem;
 };

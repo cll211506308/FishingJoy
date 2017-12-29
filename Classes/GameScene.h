@@ -18,6 +18,11 @@ public:
 	void preloadResources();
 	void cannonAimAt(CCPoint target);
 	void cannonShootTo(CCPoint target);
+	bool checkOutCollisionBetweenFishesAndBullet(Bullet* bullet);
+	void checkOutCollision();
+	virtual void update(float delta);
+	void checkOutCollisionBetweenFishesAndFishingNet(Bullet* bullet);
+	void fishWillBeCaught(Fish* fish);
 protected:
 	BackgroundLayer* backgroundLayer;
 	FishLayer* fishLayer;

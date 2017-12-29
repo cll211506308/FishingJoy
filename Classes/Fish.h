@@ -35,7 +35,14 @@ public:
 	static Fish* create(FishType var = k_Fish_Type_SmallFish);
 	int getScore();
 	int getSpeed();
+	CCRect getCollisionArea();
+	void beCaught();
+	void beCaught_CallFunc();
+	CC_SYNTHESIZE(FishType, type, Type);
+	void moveTo(CCPoint targetPoint);
+	void moveEnd();
+	void reset();
+	CCSize getSize();
 protected:
 	CCSprite* fishSprite;
-	FishType type;
 };
