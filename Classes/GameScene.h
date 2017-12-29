@@ -5,6 +5,8 @@
 #include "CannonLayer.h"
 //#include "MenuLayer.h"
 #include "TouchLayer.h"
+#include "PanelLayer.h"
+#include "FishJoyData.h"
 USING_NS_CC;
 
 class GameScene :
@@ -23,11 +25,13 @@ public:
 	virtual void update(float delta);
 	void checkOutCollisionBetweenFishesAndFishingNet(Bullet* bullet);
 	void fishWillBeCaught(Fish* fish);
+	void alterGold(int delta);
 protected:
 	BackgroundLayer* backgroundLayer;
 	FishLayer* fishLayer;
 	CannonLayer* cannonLayer;
 	TouchLayer* touchLayer;
 //	MenuLayer* menuLayer;
+	PanelLayer* paneLayer;
 };
 

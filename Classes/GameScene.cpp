@@ -22,10 +22,14 @@ bool GameScene::init()
 		cannonLayer = CannonLayer::create();
 		CC_BREAK_IF(!cannonLayer);
 		this->addChild(cannonLayer);
-
 		touchLayer = TouchLayer::create();
 		CC_BREAK_IF(!touchLayer);
 		this->addChild(touchLayer);
+		paneLayer = PanelLayer::create();
+		CC_BREAK_IF(!paneLayer);
+		this->addChild(paneLayer);
+		paneLayer->getGoldCounterLayer()->setNumber(FishJoyData::sharedFishingJoyData()->getGold());
+		
 		/*menuLayer = MenuLayer::create();
 		CC_BREAK_IF(!menuLayer);
 		CC_SAFE_RETAIN(menuLayer);*/
@@ -87,7 +91,12 @@ void GameScene::cannonAimAt(CCPoint target)
 
 void GameScene::cannonShootTo(CCPoint target)
 {
-	cannonLayer->shootTo(target);
+	int cost = (cannonLayer->getWeapon()->getCannonType() + 1) * 1;
+	int currentGold = FishJoyData::sharedFishingJoyData()->getGold();
+	if(currentGold >= cost){
+		cannonLayer->shootTo(target);
+		this->alterGold(-cost);
+	}
 }
 
 bool GameScene::checkOutCollisionBetweenFishesAndBullet(Bullet* bullet)
@@ -136,6 +145,8 @@ void GameScene::fishWillBeCaught(Fish* fish){
 	float weaponPer[k_Cannon_Count] = { 0.3, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1 };
 	if(CCRANDOM_0_1() < 1.1 ){
 		fish->beCaught();
+		int reward = STATIC_DATA_INT(CCString::createWithFormat(STATIC_DATA_STRING("reward_format"),fishType)->getCString());
+		alterGold(reward);
 	}
 }
 
@@ -150,4 +161,9 @@ void GameScene::checkOutCollisionBetweenFishesAndFishingNet(Bullet *bullet){
 			this->fishWillBeCaught(fish);
 		}
 	}
+}
+
+void GameScene::alterGold(int delta){
+	FishJoyData::sharedFishingJoyData()->alterGold(delta);
+	paneLayer->getGoldCounterLayer()->setNumber(FishJoyData::sharedFishingJoyData()->getGold());
 }
