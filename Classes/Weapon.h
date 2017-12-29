@@ -6,7 +6,8 @@
 #include "StaticData.h"
 USING_NS_CC;
 class Weapon:
-	public CCNode{
+	public CCNode
+{
 public:
 	virtual ~Weapon();
 	static Weapon* create(CannonType var = k_Cannon_Type_1);

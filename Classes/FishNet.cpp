@@ -1,4 +1,5 @@
 #include "FishNet.h"
+#include "PersonalAudioEngine.h"
 
 FishNet::FishNet()
 {
@@ -10,13 +11,13 @@ FishNet::~FishNet()
 
 bool FishNet::init()
 {
-	do
-	{
+	do{
 		CC_BREAK_IF(!CCNode::init());
+		//CCString *fileName = CCString::createWithFormat(STATIC_DATA_STRING("net_frame_format"),1);
 		CCString *fileName = CCString::createWithFormat("weapon_net_%03d.png",1);
-		fishNetSprite = CCSprite::createWithSpriteFrameName(fileName->getCString());
-		fishNetSprite->setAnchorPoint(ccp(0.5, 0.5));
-		this->addChild(fishNetSprite);
+		FishNetSprite = CCSprite::createWithSpriteFrameName(fileName->getCString());
+		FishNetSprite->setAnchorPoint(ccp(0.5, 0.5));
+		this->addChild(FishNetSprite);
 		return true;
 	}while(0);
 	return false;
@@ -26,8 +27,10 @@ void FishNet::showAt(CCPoint pos,int type /*= 0*/)
 {
 	setPosition(pos);
 	setVisible(true);
+	PersonalAudioEngine::sharedEngine()->playEffect(kEffectFishNet);
+	//CCString* fishNetFrameName = CCString::createWithFormat(STATIC_DATA_STRING("net_frame_format"), type + 1);
 	CCString* fishNetFrameName = CCString::createWithFormat("weapon_net_%03d.png", type + 1);
-	this->fishNetSprite->setDisplayFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(fishNetFrameName->getCString()));
+	this->FishNetSprite->setDisplayFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(fishNetFrameName->getCString()));
 	stopAllActions();
 	CCSequence* sequence = CCSequence::create(CCDelayTime::create(1.0), CCHide::create(),NULL);
 	runAction(sequence);
@@ -38,7 +41,7 @@ void FishNet::showAt(CCPoint pos,int type /*= 0*/)
 
 CCRect FishNet::getCollisionArea()
 {
-	CCSize size = fishNetSprite->getContentSize();
-	CCPoint pos = getParent()->convertToWorldSpace(getPosition());
-	return CCRect(pos.x - size.width / 2, pos.y - size.height/2, size.width, size.height);
+	CCSize size = FishNetSprite->getContentSize();
+	CCPoint position = getParent()->convertToWorldSpace(getPosition());
+	return CCRect(position.x - size.width / 2, position.y - size.height/2, size.width, size.height);
 }

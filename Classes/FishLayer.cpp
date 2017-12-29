@@ -19,7 +19,8 @@ bool FishLayer::init()
 	}
 	fishes = CCArray::createWithCapacity(FISH_MAX_COUNT);
 	CC_SAFE_RETAIN(fishes);
-	for(int i = 0; i < FISH_MAX_COUNT; i++){
+	for(int i = 0; i < FISH_MAX_COUNT; i++)
+	{
 		int type = CCRANDOM_0_1() * k_Fish_Type_Count - 1;
 		Fish* fish = Fish::create((FishType)type);
 		fishes->addObject(fish);
@@ -41,17 +42,13 @@ void FishLayer::addFish(float delta)
 	int count = 0;
 	CCObject* obj;
 
-	CCARRAY_FOREACH(fishes,obj){
+	CCARRAY_FOREACH(fishes,obj)
+	{
 		Fish* fish = (Fish*)obj;
-		if(fish->isRunning()){
-			continue;
-		}
-		
+		if(fish->isRunning()){continue;}
 		count++;
 		this->resetFish(fish);
-		if(count == countToAdd){
-			break;
-		}
+		if(count == countToAdd){break;}
 	}
 }
 
@@ -60,16 +57,20 @@ CCArray* FishLayer::getFishArray()
 	return fishes;
 }
 
-void FishLayer::resetFish(Fish* fish){
+void FishLayer::resetFish(Fish* fish)
+{
 	fish->reset();
 	float startX,startY,endX,endY;
 	int direction = CCRANDOM_0_1() * k_Direction_Count;
 	CCSize winSize =CCDirector::sharedDirector()->getWinSize();
 	CCSize fishSize =fish->getSize();
-	if(direction == k_Direction_Left){
+	if(direction == k_Direction_Left)
+	{
 		startX = winSize.width + fishSize.width * 0.5;
 		endX = -fishSize.width * 0.5;
-	}else{
+	}
+	else
+	{
 		endX = winSize.width + fishSize.width * 0.5;
 		fish -> setRotation(180);
 		startX = -fishSize.width * 0.5;

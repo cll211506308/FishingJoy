@@ -1,7 +1,9 @@
 #include "Bullet.h"
 #include "FishNet.h"
+#include "PersonalAudioEngine.h"
 
-enum{
+enum
+{
 	k_Bullet_Action = 0
 };
 
@@ -15,15 +17,16 @@ Bullet::~Bullet()
 
 bool Bullet::init()
 {
-	do
-	{
+	do{
 		CC_BREAK_IF(!CCNode::init());
+		//CCString *fileName = CCString::createWithFormat(STATIC_DATA_STRING("bullet_frame_format"),1);
 		CCString* fileName = CCString::createWithFormat("weapon_bullet_%03d.png", 1);
-		bulletSprite = CCSprite::createWithSpriteFrameName(fileName->getCString());
-		bulletSprite ->setAnchorPoint(ccp(0.5,1.0));
-		this ->addChild(bulletSprite);
+		BulletSprite = CCSprite::createWithSpriteFrameName(fileName->getCString());
+		BulletSprite ->setAnchorPoint(ccp(0.5,1.0));
+		this ->addChild(BulletSprite);
 		return true;
 	}while(0);
+	return false;
 }
 
 float Bullet::getSpeed(int type)
@@ -76,8 +79,10 @@ void Bullet::flyTo(CCPoint targetInWorldSpace, int type/*=0*/)
 	float angle = ccpAngleSigned(ccpSub(targetInWorldSpace, startInWorldSpace), CCPointMake(0, 1));
 	this->setRotation(CC_RADIANS_TO_DEGREES(angle));
 	this->setTag(type);
+	PersonalAudioEngine::sharedEngine()->playEffect(kEffectShoot);
+	//CCString* bulletFrameName = CCString::createWithFormat(STATIC_DATA_STRING("bullet_frame_format"), type + 1);
 	CCString* bulletFrameName = CCString::createWithFormat("weapon_bullet_%03d.png", type + 1);
-	bulletSprite->setDisplayFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(bulletFrameName->getCString()));
+	BulletSprite->setDisplayFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(bulletFrameName->getCString()));
 	float flightTime = ccpDistance(targetInWorldSpace, startInWorldSpace) / getSpeed(type);
 	CCMoveTo* moveTo = CCMoveTo::create(flightTime, targetInNodeSpace);
 	CCCallFunc* callFunc = CCCallFunc::create(this, callfunc_selector(Bullet::end));

@@ -4,7 +4,8 @@
 USING_NS_CC;
 
 class Counter:
-	public CCNode{
+	public CCNode
+{
 public:
 	Counter();
 	static Counter* create(CCArray* presenters,int digit = 0);

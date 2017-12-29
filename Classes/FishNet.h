@@ -4,7 +4,8 @@
 USING_NS_CC;
 
 class FishNet:
-	public CCNode{
+	public CCNode
+{
 public:
 	FishNet();
 	virtual ~FishNet();
@@ -13,5 +14,5 @@ public:
 	void showAt(CCPoint pos,int type = 0);
 	CCRect getCollisionArea();
 protected:
-	CCSprite*  fishNetSprite;
+	CCSprite*  FishNetSprite;
 };

@@ -5,7 +5,8 @@
 USING_NS_CC;
 
 class CannonLayer:
-	public CCLayer{
+	public CCLayer
+{
 public:
 	CannonLayer();
 	virtual ~CannonLayer();

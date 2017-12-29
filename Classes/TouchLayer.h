@@ -6,7 +6,8 @@ USING_NS_CC;
 
 class GameScene;
 class TouchLayer:
-	public CCLayer{
+	public CCLayer
+{
 public:
 	TouchLayer();
 	virtual ~TouchLayer();

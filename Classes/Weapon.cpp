@@ -1,5 +1,5 @@
 #include "Weapon.h"
-
+#include "PersonalAudioEngine.h"
 #define BULLET_COUNTS 10
 
 Weapon::~Weapon(void)
@@ -25,8 +25,7 @@ Weapon* Weapon::create(CannonType var/* = k_Cannon_Type_1*/)
 
 bool Weapon::init(CannonType var/* = k_Cannon_Type_1*/)
 {
-	do
-	{
+	do{
 		CC_BREAK_IF(!CCNode::init());
 		cannon = Cannon::create(var);
 		CC_BREAK_IF(!cannon);
@@ -57,7 +56,8 @@ bool Weapon::init(CannonType var/* = k_Cannon_Type_1*/)
 			fishNet->setVisible(false);
 			bullet->setUserObject(fishNet);
 
-			CCParticleSystemQuad* particle = CCParticleSystemQuad::create("yuwanglizi.plist");
+			CCParticleSystemQuad* particle = CCParticleSystemQuad::create(STATIC_DATA_STRING("net_particle"));
+			//CCParticleSystemQuad* particle = CCParticleSystemQuad::create("yuwanglizi.plist");
 			particle->stopSystem();
 			addChild(particle);
 			particles->addObject(particle);
@@ -70,6 +70,7 @@ bool Weapon::init(CannonType var/* = k_Cannon_Type_1*/)
 
 void Weapon::changeCannon(CannonOperate operate)
 {
+	PersonalAudioEngine::sharedEngine()->playEffect(kEffectSwichCannon);
 	int type = (int) cannon->getType();
 	type += operate;
 	cannon->setType((CannonType)type);
@@ -102,7 +103,8 @@ void Weapon:: shootTo (CCPoint target)
 Bullet* Weapon::getBulletToShoot()
 {
 	CCObject* obj;
-	CCARRAY_FOREACH(bullets, obj){
+	CCARRAY_FOREACH(bullets, obj)
+	{
 		Bullet* bullet = (Bullet*)obj;
 		if(!bullet->isVisible())
 		{
@@ -112,9 +114,11 @@ Bullet* Weapon::getBulletToShoot()
 	return NULL;
 }
 
-CCRect Weapon::getCollisionArea(Bullet* bullet){
+CCRect Weapon::getCollisionArea(Bullet* bullet)
+{
 	FishNet* _fishNets = (FishNet*)bullet->getUserObject();
-	if(_fishNets->isVisible()){
+	if(_fishNets->isVisible())
+	{
 		return _fishNets->getCollisionArea();
 	}
 	return CCRectZero;

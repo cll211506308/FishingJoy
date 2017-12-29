@@ -14,12 +14,8 @@ CCScene* GameMenuLayer::scene(void)
 
 bool GameMenuLayer::init()
 {
-	do 
-	{
-		if(!CCLayer::init())
-		{
-			return false;
-		}
+	do{
+		CC_BREAK_IF(!CCLayer::init());
 		CCSprite* bgSprite = CCSprite::create(STATIC_DATA_STRING("game_menu_background"));
 		CC_BREAK_IF(!bgSprite);
 		this->addChild(bgSprite);
@@ -87,12 +83,12 @@ void GameMenuLayer::createMenu(void)
 
 void GameMenuLayer::menuCallbackSelectScene(CCObject* sender)
 {
-
 }
 
 void GameMenuLayer::menuCallbackStartGame(CCObject* sender)
 {
-
+	GameScene* gameScene=GameScene::create();
+	CCDirector::sharedDirector()->replaceScene(gameScene);
 }
 
 GameMenuLayer::~GameMenuLayer()

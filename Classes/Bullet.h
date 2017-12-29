@@ -4,7 +4,8 @@
 USING_NS_CC;
 
 class Bullet:
-	public CCNode{
+	public CCNode
+{
 public:
 	Bullet();
 	virtual ~Bullet();
@@ -15,5 +16,5 @@ public:
 	void flyTo(CCPoint targetInWordSpace, int type =0);
 	CCPoint getCollisionPoint();
 protected:
-	CCSprite*  bulletSprite;
+	CCSprite*  BulletSprite;
 };

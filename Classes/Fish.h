@@ -27,7 +27,8 @@ typedef enum{
 }FishType;
 
 class Fish:
-	public CCNode{
+	public CCNode
+{
 public:
 	Fish();
 	virtual ~Fish();
@@ -44,5 +45,5 @@ public:
 	void reset();
 	CCSize getSize();
 protected:
-	CCSprite* fishSprite;
+	CCSprite* FishSprite;
 };

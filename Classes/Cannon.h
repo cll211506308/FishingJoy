@@ -21,7 +21,8 @@ typedef enum{
 }CannonOperate;
 
 class Cannon:
-	public CCNode{
+	public CCNode
+{
 public:
 	Cannon();
 	virtual ~Cannon();
@@ -33,6 +34,6 @@ public:
 	CCSize getSize();
 	void aimAt(CCPoint target);
 protected:
-	CCArray* cannonSprites;
-	CannonType type;
+	CCArray* CannonSprites;
+	CannonType Type;
 };

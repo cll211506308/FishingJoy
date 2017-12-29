@@ -4,7 +4,8 @@
 USING_NS_CC;
 
 class GoldCounterLayer:
-	public CCNode{
+	public CCNode
+{
 public:
 	static GoldCounterLayer* create(int number);
 	bool init(int number);

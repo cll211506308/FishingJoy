@@ -22,13 +22,14 @@ bool Fish::init(FishType var/* = k_Fish_Type_SmallFish*/)
 			var = k_Fish_Type_SmallFish;
 		}
 		type = var;
+		//CCString* animationName = CCString::createWithFormat(STATIC_DATA_STRING("fish_animation_format"), type + 1);
 		CCString* animationName = CCString::createWithFormat("fish_animation_%02d", type + 1);
 		CCAnimation* animation = CCAnimationCache::sharedAnimationCache()->animationByName(animationName->getCString());
 		CC_BREAK_IF(!animation);
 		CCAnimate* animate = CCAnimate::create(animation);
-		fishSprite = CCSprite::create();
-		this->addChild(fishSprite);
-		fishSprite->runAction(CCRepeatForever::create(animate));
+		FishSprite = CCSprite::create();
+		this->addChild(FishSprite);
+		FishSprite->runAction(CCRepeatForever::create(animate));
 		return true;
 	}while(0);
 	return false;
@@ -62,27 +63,31 @@ int Fish::getSpeed()
 CCRect Fish::getCollisionArea()
 {
 	CCPoint position = getParent()->convertToWorldSpace(this->getPosition());
-	CCSize size = fishSprite->getContentSize();
+	CCSize size = FishSprite->getContentSize();
 	return CCRect(position.x - size.width / 2, position.y - size.height/2, size.width, size.height);
 }
 
-void Fish::beCaught(){
+void Fish::beCaught()
+{
 	stopActionByTag(k_Action_MoveTo);
 	CCDelayTime* delayTime = CCDelayTime::create(1.0f);
 	CCCallFunc* callFunc = CCCallFunc::create(this,callfunc_selector(Fish::beCaught_CallFunc));
 	CCSequence* sequence = CCSequence::create(delayTime,callFunc,NULL);
-	CCBlink* blink = CCBlink::create(1.0f,8);
+	CCBlink* blink = CCBlink::create(1.0f,3);
 	CCSpawn* spawn = CCSpawn::create(sequence, blink, NULL);
-	fishSprite->runAction(spawn);
+	FishSprite->runAction(spawn);
 }
 
-void Fish::beCaught_CallFunc(){
-	if(this->isRunning()){
+void Fish::beCaught_CallFunc()
+{
+	if(this->isRunning())
+	{
 		this->getParent()->removeChild(this,false);
 	}
 }
 
-void Fish::moveTo(CCPoint targetPoint){
+void Fish::moveTo(CCPoint targetPoint)
+{
 	CCPoint point =getParent()->convertToWorldSpace(this->getPosition());
 	float swimmingTime = ccpDistance(targetPoint,point)/getSpeed();
 	CCMoveTo* moveTo = CCMoveTo::create(swimmingTime,targetPoint);
@@ -92,19 +97,21 @@ void Fish::moveTo(CCPoint targetPoint){
 	this->runAction(sequence);
 }
 
-void Fish::moveEnd(){
-	if(isRunning()){
+void Fish::moveEnd()
+{
+	if(isRunning())
+	{
 		getParent()->removeChild(this,false);
 	}
 }
 
-void Fish::reset(){
+void Fish::reset()
+{
 	this->setRotation(0);
 	this->setVisible(true);
 }
 
 CCSize Fish::getSize()
 {
-	return fishSprite->displayFrame()->getRect().size;
-
+	return FishSprite->displayFrame()->getRect().size;
 }

@@ -2,17 +2,21 @@
 
 static FishJoyData* _sharedFishingJoyData = NULL;
 
-FishJoyData::FishJoyData(){
+FishJoyData::FishJoyData()
+{
 }
 
-FishJoyData::~FishJoyData(){
+FishJoyData::~FishJoyData()
+{
 }
 
-void FishJoyData::purge(){
+void FishJoyData::purge()
+{
 	CC_SAFE_RELEASE_NULL(_sharedFishingJoyData);
 }
 
-void FishJoyData::flush(){
+void FishJoyData::flush()
+{
 	CCUserDefault* userDefault = CCUserDefault::sharedUserDefault();
 	userDefault->setBoolForKey("isBeginer",isBeginer);
 	userDefault->setBoolForKey("music",isMusic);
@@ -21,7 +25,8 @@ void FishJoyData::flush(){
 	userDefault -> flush();
 }
 
-void FishJoyData::reset(){
+void FishJoyData::reset()
+{
 	this->setGold(100);
 	this->setIsBeginer(false);
 	this->setIsMusic(true);
